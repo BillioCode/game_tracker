@@ -3,7 +3,6 @@ import GameCard from "@/components/game-card";
 
 export default async function Home() {
   const Populargames = await getPopularGames();
-  console.log(Populargames.results);
   return (
     <div className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-6">
       <h1 className="text-3xl font-semibold">Popular Games</h1>

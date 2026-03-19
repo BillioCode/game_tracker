@@ -1,9 +1,14 @@
 // src/lib/prisma.ts
-import { PrismaClient } from "./generated/prisma";
+import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
 
 // Step 1: Create a function to instantiate the client
 const prismaClientSingleton = () => {
-  return new PrismaClient();
+  return new PrismaClient({ adapter });
 };
 
 // Step 2: Declare a global variable for reusability

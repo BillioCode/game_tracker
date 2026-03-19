@@ -1,17 +1,16 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma"; // Your working Prisma 7 adapter file
 import bcrypt from "bcryptjs";
+import { authConfig } from "./auth.config"; // IMPORT the config here
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig, // THIS LINKS THE TWO FILES
   adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
   providers: [
     Credentials({
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
@@ -32,8 +31,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  session: { strategy: "jwt" },
-  pages: {
-    signIn: "/login",
-  },
 });
